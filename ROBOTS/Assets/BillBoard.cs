@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using elZach.Common;
 using UnityEngine;
 
 public class BillBoard : MonoBehaviour
@@ -21,7 +22,7 @@ public class BillBoard : MonoBehaviour
         }
 
         private static Transform _camera;
-        static Transform camera{get
+        static Transform cam{get
         {
             if (!_camera) _camera = Camera.main.transform;
             return _camera;
@@ -31,12 +32,16 @@ public class BillBoard : MonoBehaviour
 
         void Update()
         {
-            var camDirection = camera.forward;
-            camDirection.y = 0f;
-            camDirection = camDirection.normalized;
+            // var camDirection = camera.forward;
+            // camDirection.y = 0f;
+            // camDirection = camDirection.normalized;
+            var camPosition = cam.position;
             foreach (var billBoard in billBoards)
             {
-                billBoard.transform.rotation = Quaternion.LookRotation(camDirection, Vector3.up);
+                var dir = (billBoard.transform.position - camPosition).normalized;
+                dir.ZeroY();
+                dir = dir.normalized;
+                billBoard.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
             }
         }
 

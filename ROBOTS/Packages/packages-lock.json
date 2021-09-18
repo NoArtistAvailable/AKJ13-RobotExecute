@@ -17,6 +17,13 @@
       },
       "hash": "4f094ca3ce7986106a98bf226d98be0cc8a6edd0"
     },
+    "com.elzach.objectpooling": {
+      "version": "https://github.com/NoArtistAvailable/elzach-objectpooling.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "ffef3b00e7f29d6fd20158cfd91a78d55aa1990f"
+    },
     "com.elzach.renderpipelines": {
       "version": "https://github.com/NoArtistAvailable/elzach-renderpipelines.git",
       "depth": 0,

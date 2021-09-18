@@ -4,26 +4,42 @@ using UnityEngine;
 
 public class CameraControls : MonoBehaviour
 {
-    public Camera cam;
+    private static Camera _cam;
+    public static Camera cam{get
+    {
+        if (!_cam) _cam = Camera.main;
+        return _cam;
+    }}
     public Transform cameraPivot;
     
+    [Info("Sets the sensitivity of the camera.", InfoAttribute.InfoType.Warning)]
     public Vector2 sensitivity = Vector2.one;
     public Vector3 offsetRange;
     public Vector2 minMaxX;
 
-    public Vector3? clickPivot;
-    public Vector3 oldMousePos;
+    Vector3? clickPivot;
+    Vector3 oldMousePos;
 
     void Start()
     {
         oldMousePos = Input.mousePosition;
     }
+
+    void OnApplicationFocus(bool focus)
+    {
+        if(focus)
+            oldMousePos = Input.mousePosition;
+    }
     
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
-            if (GetClickPivot(out var hitPoint)) clickPivot = hitPoint; 
+        {
+            oldMousePos = Input.mousePosition;
+            if (GetClickPivot(out var hitPoint)) clickPivot = hitPoint;
             else clickPivot = null;
+        }
+
         if (Input.GetMouseButton(0) && clickPivot != null)
         {
             var delta = Input.mousePosition - oldMousePos;
@@ -35,9 +51,14 @@ public class CameraControls : MonoBehaviour
             // Debug.Log(targetEuler);
             targetEuler -= offsetRange;
             //targetEuler.x = Mathf.Clamp(targetEuler.x, -80f, 80f);
-            
             cameraPivot.eulerAngles = targetEuler;
         }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            
+        }
+        
         oldMousePos = Input.mousePosition;
     }
 
