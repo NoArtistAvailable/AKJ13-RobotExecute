@@ -25,7 +25,7 @@ public class Path : MonoBehaviour
     
     [SerializeField] GameObject pathPointOriginal;
 
-    public float up = 1f;
+    public static float up = 0.8f;
     private LineRenderer _line;
     public LineRenderer line{get
     {

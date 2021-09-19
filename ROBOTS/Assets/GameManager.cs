@@ -72,6 +72,15 @@ namespace elZach.Robots
             float currentTime = arg0 * gameTime;
             foreach (var robot in currentRobots)
             {
+                if (!robot.living)
+                {
+                    if(robot.timeOfDeath < currentTime)
+                        continue;
+                    else
+                    {
+                        robot.Revive();
+                    }
+                }
                 if (robot.path != null && robot.path.pathPoints.Count > 0)
                 {
                     robot.transform.position = robot.path.Evaluate(currentTime, out var dir, out var state);

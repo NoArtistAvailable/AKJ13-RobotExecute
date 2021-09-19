@@ -10,6 +10,7 @@ public class PathPlaner : MonoBehaviour
     public static PathPlaner Instance => _instance.Value;
     public Path pathPrefab;
     public LayerMask colliderMask = -1;
+    public static LayerMask ColliderMask => Instance.colliderMask;
 
     LineRenderer _line;
     public LineRenderer line{get
@@ -53,12 +54,12 @@ public class PathPlaner : MonoBehaviour
                 pos = ray.GetPoint(enter);
             }
             else return;
-            line.SetPosition(1,pos + Vector3.up * pathPrefab.up);
+            line.SetPosition(1,pos + Vector3.up * Path.up);
             line.SetPosition(2, pos);
             if (Input.GetMouseButtonDown(0))
             {
-                Vector3 from = lastPlacedPoint + Vector3.up * pathPrefab.up;
-                Vector3 to = (pos + Vector3.up * pathPrefab.up);
+                Vector3 from = lastPlacedPoint + Vector3.up * Path.up;
+                Vector3 to = (pos + Vector3.up * Path.up);
                 //Debug.DrawRay(from,direction,Color.red,3f);
                 // if (Physics.Raycast(from, direction, out var hit, direction.magnitude))
                 // {
@@ -97,7 +98,7 @@ public class PathPlaner : MonoBehaviour
     private void AddPointToPath(Path path, Vector3 pos)
     {
         lastPlacedPoint = pos;
-        line.SetPosition(0, pos + Vector3.up * path.up);
+        line.SetPosition(0, pos + Vector3.up * Path.up);
         path.AddPoint(pos);
     }
 
@@ -107,7 +108,7 @@ public class PathPlaner : MonoBehaviour
         currentPath = path;
         isPlanning = true;
         line.positionCount = 3;
-        lastPlacedPoint = pointScript.transform.position - Vector3.up * path.up;
+        lastPlacedPoint = pointScript.transform.position - Vector3.up * Path.up;
         line.SetPosition(0, lastPlacedPoint);
     }
 

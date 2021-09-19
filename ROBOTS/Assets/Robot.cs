@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using elZach.Robots;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Robot : MonoBehaviour
 {
@@ -11,11 +12,15 @@ public class Robot : MonoBehaviour
     public Faction faction;
 
     public PathPoint.PathAction state;
+    public bool living = true;
+    public float timeOfDeath;
     
     public string robotName = "Clive";
     public int lifePoints = 1;
     public float speed = 3f;
     public Path path;
+
+    public Animatable deathAnimatable;
     
     Rigidbody _rb;
     public Rigidbody rb{get
@@ -24,13 +29,52 @@ public class Robot : MonoBehaviour
         return _rb;
     }}
 
+    private VisionCone _vis;
+    public VisionCone Vision{get
+    {
+        if (!_vis) _vis = GetComponentInChildren<VisionCone>();
+        return _vis;
+    }}
+
     public event Action onDestroy;
+    public UnityEvent OnGameDeath;
 
     void Start()
     {
         GameManager.Register(this);
     }
 
+    void Update()
+    {
+        if (!living) return;
+        if (state == PathPoint.PathAction.TakeAim)
+        {
+            foreach (var otherBot in GameManager.Instance.currentRobots.FindAll(x => x.faction != faction))
+            {
+                if (!otherBot.living) continue;
+                Vector3 myPos = transform.position + Vector3.up * Path.up;
+                Vector3 otherPos = otherBot.transform.position + Vector3.up * Path.up;
+                Vector3 direction = otherPos - myPos;
+                float distance = direction.magnitude;
+                if (distance > Vision.range) continue;
+                if (Physics.Raycast(myPos, direction, out var hit, distance, PathPlaner.ColliderMask))
+                {
+                    if (hit.collider.GetComponentInParent<Robot>() != otherBot) continue;
+                }
+                Debug.Log("PEWPEW", this);
+                otherBot.GameDeath();
+            }
+        }
+    }
+
+    void GameDeath()
+    {
+        living = false;
+        timeOfDeath = GameManager.Instance.playSlider.value * GameManager.Instance.gameTime;
+        deathAnimatable.Play(1);
+        OnGameDeath.Invoke();
+    }
+    
     void OnDestroy()
     {
         if (GameManager.ApplicationIsQuitting) return;
@@ -97,5 +141,11 @@ public class Robot : MonoBehaviour
             return bot;
         }
     }
-    
+
+    public void Revive()
+    {
+        living = true;
+        timeOfDeath = 0f;
+        deathAnimatable.Play(0);
+    }
 }
