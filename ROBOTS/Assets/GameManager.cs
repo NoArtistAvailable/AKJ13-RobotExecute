@@ -24,8 +24,17 @@ namespace elZach.Robots
         
         public Slider playSlider;
         public Button playButton;
+        public Button pauseButton;
         public Button uploadButton;
         public Robot robotPrefab;
+
+        public Text playAgainstText;
+
+        public Button<GameManager> playAgainstFadeInTest =
+            new Button<GameManager>(x => x.playAgainstText.GetComponent<Animatable>().Play(1));
+        public Button<GameManager> playAgainstFadeOutest =
+            new Button<GameManager>(x => x.playAgainstText.GetComponent<Animatable>().Play(0));
+        
         private Coroutine playRoutine;
         public float gameTime = 30f;
         void Start()
@@ -33,8 +42,15 @@ namespace elZach.Robots
             //Physics.queriesHitTriggers = true;
             playSlider.onValueChanged.AddListener(PlaySliderChanged);
             playButton.onClick.AddListener(Play);
+            pauseButton.onClick.AddListener(Pause);
             uploadButton.onClick.AddListener(()=>Pack());
             Application.quitting += () => ApplicationIsQuitting = true;
+        }
+
+        private void Pause()
+        {
+            if(playRoutine != null) StopCoroutine(playRoutine);
+            playRoutine = null;
         }
 
         private void Play()
@@ -57,7 +73,13 @@ namespace elZach.Robots
             foreach (var robot in currentRobots)
             {
                 if (robot.path != null && robot.path.pathPoints.Count > 0)
-                    robot.rb.MovePosition(robot.path.Evaluate(currentTime));
+                {
+                    robot.rb.MovePosition(robot.path.Evaluate(currentTime, out var dir, out var state));
+                    robot.rb.MoveRotation(Quaternion.LookRotation(dir, Vector3.up));
+                    bool stateChange = robot.state != state;
+                    robot.state = state;
+                    if(stateChange) robot.GetComponentInChildren<VisionCone>().GetComponent<Animatable>().Play(state == PathPoint.PathAction.TakeAim ? 1 : 0);
+                }
             }
         }
 
@@ -72,7 +94,8 @@ namespace elZach.Robots
             playRoutine = null;
         }
 
-        public Button<GameManager> loadRandomPlanButton = new Button<GameManager>(x=>x.Unpack(x.netSynch.onlinePlans[UnityEngine.Random.Range(0,x.netSynch.onlinePlans.Length)]));
+        public Button<GameManager> loadRandomPlanButton = new Button<GameManager>(x =>
+            x.Unpack(x.netSynch.onlinePlans[UnityEngine.Random.Range(0, x.netSynch.onlinePlans.Length)]));
         
         string testJSON;
         public string manufacturerName = "Test Industries";

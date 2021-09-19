@@ -5,14 +5,19 @@ Todo:
 [ ] sfx
 [ ] add faction selection
 [ ] add wait points
-[ ] add vision cones
+[x] add vision cones
 [ ] add shooting
-[ ] add states to robots (default, aiming, dead)
+[x] add states to robots (default, aiming, dead)
+[ ] add deathstate
 [ ] add physic limits (no walking through walls)
 [ ] play all levels and upload paths
 [ ] fast replay mode, to compare against others
 [ ] add indicator who you play against
 [ ] statistics?
 [ ] leaderbaord?
-[ ] create icons for pathpoints
+[x] create icons for pathpoints
 [ ] Victory / Loss / Draw screen
+[ ] implement line of sight & cover
+[ ] add robot graphics
+[ ] get a font
+[ ] the itch.io page!

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Animatable : MonoBehaviour
 {
@@ -18,10 +19,17 @@ public class Animatable : MonoBehaviour
     [Serializable]
     public class Clip
     {
+        [System.Serializable]
+        public class Events
+        {
+            public UnityEvent OnStarted, OnEnded;
+        }
         public AnimationCurve curve = new AnimationCurve(new Keyframe(0f,0f), new Keyframe(1f,1f));
         public float time=0.25f;
         public TransformOptions animate;
         public TransformData data;
+        public Events events;
+
     }
 
     public List<Clip> clips;
@@ -63,6 +71,7 @@ public class Animatable : MonoBehaviour
         Vector3 targetScale = clip.data.localScale;
 
         float progress = 0f;
+        clip.events.OnStarted.Invoke();
         while (progress < 1f)
         {
             progress += Time.deltaTime / clip.time;
@@ -73,6 +82,7 @@ public class Animatable : MonoBehaviour
             yield return null;
         }
         SetTo(clip);
+        clip.events.OnEnded.Invoke();
         currentTransition = null;
     }
 

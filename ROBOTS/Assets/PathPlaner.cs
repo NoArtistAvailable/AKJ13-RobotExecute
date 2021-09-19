@@ -74,6 +74,16 @@ public class PathPlaner : MonoBehaviour
         path.AddPoint(pos);
     }
 
+    public void ReactivatePathBuilding(PathPoint pointScript)
+    {
+        var path = pointScript.path;
+        currentPath = path;
+        isPlanning = true;
+        line.positionCount = 3;
+        lastPlacedPoint = pointScript.transform.position;
+        line.SetPosition(0, lastPlacedPoint);
+    }
+
     // public void CreateFromSerializablePlan(GameManager.SerializablePlan plan)
     // {
     //     Debug.Log($"Creating {plan.manufacturer} plan.");

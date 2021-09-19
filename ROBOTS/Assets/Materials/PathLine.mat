@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PathPoint
-  m_Shader: {fileID: -6465566751694194690, guid: a07e52224948aae49aa5382346b92898, type: 3}
+  m_Name: PathLine
+  m_Shader: {fileID: -6465566751694194690, guid: 73402ec78d56f3a418373a7c4a4d02f9, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -118,7 +118,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.2783019, g: 0.58290166, b: 1, a: 1}
-    - _Color: {r: 0.81934166, g: 1.8298632, b: 5.2164755, a: 1}
+    - _Color: {r: 0.1254902, g: 0.26666668, b: 0.7490196, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

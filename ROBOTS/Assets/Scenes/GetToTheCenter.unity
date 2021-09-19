@@ -25631,6 +25631,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameplayNotes
       objectReference: {fileID: 0}
+    - target: {fileID: 1166317024901689125, guid: 2d623beeee5624c428d82bd1c8699912, type: 3}
+      propertyPath: showInScene
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d623beeee5624c428d82bd1c8699912, type: 3}
 --- !u!1001 &1172002097
@@ -33994,6 +33998,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7286405888796877629, guid: fead28f160ccc5b4d9ee9c36716a986b, type: 3}
+      propertyPath: m_Size.x
+      value: 1.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7286405888796877629, guid: fead28f160ccc5b4d9ee9c36716a986b, type: 3}
+      propertyPath: m_Size.y
+      value: 1.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 7286405888796877629, guid: fead28f160ccc5b4d9ee9c36716a986b, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7785718375436690227, guid: fead28f160ccc5b4d9ee9c36716a986b, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -38636,7 +38652,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65815e5365eb2ce4e8c77bbfb276b283, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.174
+      value: 0.288
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65815e5365eb2ce4e8c77bbfb276b283, type: 3}
       propertyPath: m_LocalPosition.z

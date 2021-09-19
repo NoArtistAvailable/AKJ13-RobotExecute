@@ -10,6 +10,7 @@ public class Path : MonoBehaviour
     public class Point
     {
         public Vector3 position;
+        public PathPoint.PathAction action;
         public float timeStamp;
 
         public Point(Vector3 position)
@@ -73,6 +74,23 @@ public class Path : MonoBehaviour
             pointVisual.SetActive(true);
             onCreateNewPath -= pointVisual.Despawn;
             onCreateNewPath += pointVisual.Despawn;
+            var pointScript = pointVisual.GetComponent<PathPoint>();
+            pointScript.pathAction = point.action;
+            pointScript.SetSpriteFromAction();
+            pointScript.onChangedAction += (action) =>
+            {
+                point.action = action;
+                Calculate(this.assigned);
+            };
+            pointScript.onRemove += () =>
+            {
+                pathPoints.Remove(point);
+                pointVisual.Despawn();
+                CreatePath();
+                Calculate(this.assigned);
+            };
+            pointScript.onClicked -= PathPlaner.Instance.ReactivatePathBuilding;
+            if (index == pathPoints.Count - 1) pointScript.onClicked += PathPlaner.Instance.ReactivatePathBuilding;
         }
     }
 
@@ -82,11 +100,12 @@ public class Path : MonoBehaviour
         {
             var previous = pathPoints[i - 1];
             var point = pathPoints[i];
-            point.timeStamp = previous.timeStamp + Vector3.Distance(previous.position, point.position) / robot.speed;
+            float speedModifier = previous.action != PathPoint.PathAction.GoTo ? 0.5f : 1f;
+            point.timeStamp = previous.timeStamp + Vector3.Distance(previous.position, point.position) / (robot.speed * speedModifier);
         }
     }
     
-    public Vector3 Evaluate(float time)
+    public Vector3 Evaluate(float time, out Vector3 direction, out PathPoint.PathAction state)
     {
         for (int i = 0; i < pathPoints.Count; i++)
         {
@@ -94,10 +113,16 @@ public class Path : MonoBehaviour
             if (time >= point.timeStamp) continue;
             var previous = pathPoints[i - 1];
             float progress = time.Remap(previous.timeStamp, point.timeStamp, 0f, 1f);
+            direction = (point.position - previous.position).normalized;
+            state = previous.action;
             return Vector3.Lerp(previous.position, point.position, progress);
         }
+        var secondToLastPoint = pathPoints[pathPoints.Count - 2];
+        var lastPoint = pathPoints[pathPoints.Count - 1];
 
-        return pathPoints[pathPoints.Count - 1].position;
+        state = lastPoint.action;
+        direction = (lastPoint.position - secondToLastPoint.position).normalized;
+        return lastPoint.position;
     }
 
     public void AddPoint(Vector3 pos)

@@ -9,6 +9,8 @@ public class Robot : MonoBehaviour
     public enum Faction{A,B,C,D}
 
     public Faction faction;
+
+    public PathPoint.PathAction state;
     
     public string robotName = "Clive";
     public int lifePoints = 1;

@@ -32,6 +32,9 @@ public class CameraControls : MonoBehaviour
     private float lastClickTimeStamp;
     private float clickTimeStamp;
 
+    public static bool active = true;
+    public static void SetCameraControls(bool value) => active = value;
+
     void Start()
     {
         oldMousePos = Input.mousePosition;
@@ -46,39 +49,45 @@ public class CameraControls : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (active)
         {
-            lastClickTimeStamp = clickTimeStamp;
-            clickTimeStamp = Time.time;
-            oldMousePos = Input.mousePosition;
-            if (GetClickPivot(out var hitPoint)) clickPivot = hitPoint;
-            else clickPivot = null;
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                lastClickTimeStamp = clickTimeStamp;
+                clickTimeStamp = Time.time;
+                oldMousePos = Input.mousePosition;
+                if (GetClickPivot(out var hitPoint)) clickPivot = hitPoint;
+                else clickPivot = null;
+            }
 
-        if (Input.GetMouseButton(0) && clickPivot != null)
-        {
-            var delta = Input.mousePosition - oldMousePos;
-            delta /= Screen.width;
-            var targetEuler = cameraPivot.eulerAngles + Vector3.right * delta.y * sensitivity.y + Vector3.up * delta.x * sensitivity.x;
-            targetEuler += offsetRange;
-            targetEuler.x = targetEuler.x % 360f;
-            targetEuler.x = Mathf.Clamp(targetEuler.x, minMaxX.x, minMaxX.y);
-            // Debug.Log(targetEuler);
-            targetEuler -= offsetRange;
-            //targetEuler.x = Mathf.Clamp(targetEuler.x, -80f, 80f);
-            cameraPivot.eulerAngles = targetEuler;
-        }
+            if (Input.GetMouseButton(0) && clickPivot != null)
+            {
+                var delta = Input.mousePosition - oldMousePos;
+                delta /= Screen.width;
+                var targetEuler = cameraPivot.eulerAngles + Vector3.right * delta.y * sensitivity.y +
+                                  Vector3.up * delta.x * sensitivity.x;
+                targetEuler += offsetRange;
+                targetEuler.x = targetEuler.x % 360f;
+                targetEuler.x = Mathf.Clamp(targetEuler.x, minMaxX.x, minMaxX.y);
+                // Debug.Log(targetEuler);
+                targetEuler -= offsetRange;
+                //targetEuler.x = Mathf.Clamp(targetEuler.x, -80f, 80f);
+                cameraPivot.eulerAngles = targetEuler;
+            }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            if (Time.time - clickTimeStamp < 0.2f && clickTimeStamp - lastClickTimeStamp < 0.3f && clickPivot != null) pivotTargetPosition = clickPivot.Value;
-        }
+            if (Input.GetMouseButtonUp(0))
+            {
+                if (Time.time - clickTimeStamp < 0.2f && clickTimeStamp - lastClickTimeStamp < 0.3f &&
+                    clickPivot != null) pivotTargetPosition = clickPivot.Value;
+            }
 
-        if (Mathf.Abs(Input.mouseScrollDelta.y) > 0f)
-        {
-            currentZoom -= Input.mouseScrollDelta.y * Time.deltaTime * zoomSpeed;
-            currentZoom = Mathf.Clamp01(currentZoom);
-            localZoomPosition = Vector3.back * zoomCurve.Evaluate(currentZoom).Remap(0f, 1f, minMaxZoom.x, minMaxZoom.y);
+            if (Mathf.Abs(Input.mouseScrollDelta.y) > 0f)
+            {
+                currentZoom -= Input.mouseScrollDelta.y * Time.deltaTime * zoomSpeed;
+                currentZoom = Mathf.Clamp01(currentZoom);
+                localZoomPosition =
+                    Vector3.back * zoomCurve.Evaluate(currentZoom).Remap(0f, 1f, minMaxZoom.x, minMaxZoom.y);
+            }
         }
 
         cameraPivot.position = Vector3.Lerp(cameraPivot.position, pivotTargetPosition, Time.deltaTime*5f);
