@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using elZach.Common;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = System.Random;
 
@@ -55,7 +56,8 @@ namespace elZach.Robots
             float currentTime = arg0 * gameTime;
             foreach (var robot in currentRobots)
             {
-                robot.rb.MovePosition(robot.path.Evaluate(currentTime));
+                if (robot.path != null && robot.path.pathPoints.Count > 0)
+                    robot.rb.MovePosition(robot.path.Evaluate(currentTime));
             }
         }
 
@@ -80,7 +82,7 @@ namespace elZach.Robots
             List<string> robots = new List<string>();
             foreach(var robot in currentRobots)
                 robots.Add(new Robot.SerializableRobot(robot).ToJSON());
-            var uploadPlan = new SerializablePlan(manufacturer, robots);
+            var uploadPlan = new SerializablePlan(SceneManager.GetActiveScene().name, PathPlaner.Instance.currentFaction.ToString(), manufacturer, robots);
             return uploadPlan;
             // testJSON = uploadPlan.ToJSON();
             // return testJSON;
@@ -100,12 +102,14 @@ namespace elZach.Robots
 
         public class SerializablePlan
         {
+            public string scene;
+            public string faction;
             public string manufacturer;
             public List<string> robots;
 
             public SerializablePlan(){}
             
-            public SerializablePlan(string manufacturer, List<string> robots)
+            public SerializablePlan(string scene, string faction, string manufacturer, List<string> robots)
             {
                 this.manufacturer = manufacturer;
                 this.robots = robots;
@@ -121,6 +125,9 @@ namespace elZach.Robots
                 }
                 manufacturer = serialized.manufacturer;
                 robots = serialized.robots;
+
+                scene = serialized.scene;
+                faction = serialized.faction;
             }
 
             public string ToJSON()

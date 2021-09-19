@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 49315909173638664}
   - component: {fileID: 1756432405895303149}
   - component: {fileID: 6966385878619097255}
-  - component: {fileID: 7240636494071977417}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -127,22 +126,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7240636494071977417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7506574732984775839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcee348a1b2551e4083302349b36c921, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  overrides:
-  - propertyName: _BaseColor
-    type: 0
-    vector4Value: {x: 0, y: 0, z: 0, w: 0}
-    colorValue: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 1}
-    textureValue: {fileID: 0}
-    floatValue: 0

@@ -22,6 +22,7 @@ public class PathPlaner : MonoBehaviour
     private Plane groundPlane = new Plane(Vector3.up, 0f);
 
     private Path currentPath;
+    public Robot.Faction currentFaction;
     
     public void StartPath(Robot target)
     {

@@ -51,7 +51,7 @@ MonoBehaviour:
   playButton: {fileID: 1158270848807951761}
   uploadButton: {fileID: 1158270848613940682}
   robotPrefab: {fileID: 1378534580529330017, guid: 673900b3d5ad2774a8a79ea98d8cbe40, type: 3}
-  gameTime: 5
+  gameTime: 10
   currentRobots: []
   loadRandomPlanButton:
     height: 0

@@ -49,7 +49,6 @@ MonoBehaviour:
     layerObjects:
     - {fileID: 11400000, guid: 64d70a42c6dc45449bda4779498b4343, type: 2}
     - {fileID: 11400000, guid: e550b5673261e3c47992e22991f7857d, type: 2}
-    - {fileID: 11400000, guid: 148b0beec6a6c624b9be8202e68b76ac, type: 2}
   - name: Detail
     color: {r: 0.6944217, g: 0.34721085, b: 0.6373483, a: 1}
     rasterSize:
@@ -59,3 +58,4 @@ MonoBehaviour:
     layerObjects:
     - {fileID: 11400000, guid: 5140e034d431ac246ad9d7ed7fb581b0, type: 2}
     - {fileID: 11400000, guid: e591a44929f7936488bc6f12cc4be860, type: 2}
+    - {fileID: 11400000, guid: 148b0beec6a6c624b9be8202e68b76ac, type: 2}

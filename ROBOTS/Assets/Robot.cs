@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class Robot : MonoBehaviour
 {
+    public enum Faction{A,B,C,D}
+
+    public Faction faction;
+    
     public string robotName = "Clive";
     public int lifePoints = 1;
     public float speed = 3f;
@@ -29,6 +33,26 @@ public class Robot : MonoBehaviour
     {
         if (GameManager.ApplicationIsQuitting) return;
         if(onDestroy!=null) onDestroy.Invoke();
+    }
+    
+    void OnDrawGizmos()
+    {
+        switch (faction)
+        {
+            case Faction.A:
+                Gizmos.color = Color.green;
+                break;
+            case Faction.B:
+                Gizmos.color = Color.red;
+                break;
+            case Faction.C:
+                Gizmos.color = Color.blue;
+                break;
+            case Faction.D:
+                Gizmos.color = Color.magenta;
+                break;
+        }
+        Gizmos.DrawSphere(transform.position+Vector3.up,0.1f);
     }
 
     
