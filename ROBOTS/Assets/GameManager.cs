@@ -13,8 +13,16 @@ namespace elZach.Robots
 {
     public class GameManager : MonoBehaviour
     {
-        static Lazy<GameManager> _instance = new Lazy<GameManager>(FindObjectOfType<GameManager>); 
-        public static GameManager Instance => _instance.Value;
+        static GameManager _instance;// = new Lazy<PathPlaner>(FindObjectOfType<PathPlaner>);
+
+        public static GameManager Instance
+        {
+            get
+            {
+                if (!_instance) _instance = FindObjectOfType<GameManager>();
+                return _instance;
+            }
+        }
         public static bool ApplicationIsQuitting = false;
         public static bool PlayerCanInteract = true;
 
@@ -79,7 +87,7 @@ namespace elZach.Robots
         public static void Register(Robot robot)
         {
             Instance.currentRobots.Add(robot);
-            robot.onDestroy += () => Instance.currentRobots.Remove(robot);
+            robot.onDestroy += () => Instance?.currentRobots.Remove(robot);
         }
 
         public void PlaySliderChanged(float arg0)

@@ -6,8 +6,17 @@ using UnityEngine;
 
 public class PathPlaner : MonoBehaviour
 {
-    static Lazy<PathPlaner> _instance = new Lazy<PathPlaner>(FindObjectOfType<PathPlaner>);
-    public static PathPlaner Instance => _instance.Value;
+    static PathPlaner _instance;// = new Lazy<PathPlaner>(FindObjectOfType<PathPlaner>);
+
+    public static PathPlaner Instance
+    {
+        get
+        {
+            if (!_instance) _instance = FindObjectOfType<PathPlaner>();
+            return _instance;
+        }
+    }
+
     public Path pathPrefab;
     public LayerMask colliderMask = -1;
     public static LayerMask ColliderMask => Instance.colliderMask;

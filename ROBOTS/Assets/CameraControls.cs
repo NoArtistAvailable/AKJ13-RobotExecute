@@ -6,8 +6,16 @@ using UnityEngine;
 
 public class CameraControls : MonoBehaviour
 {
-    static Lazy<CameraControls> _instance = new Lazy<CameraControls>(FindObjectOfType<CameraControls>); 
-    public static CameraControls Instance => _instance.Value;
+    static CameraControls _instance;// = new Lazy<PathPlaner>(FindObjectOfType<PathPlaner>);
+
+    public static CameraControls Instance
+    {
+        get
+        {
+            if (!_instance) _instance = FindObjectOfType<CameraControls>();
+            return _instance;
+        }
+    }
     private static Camera _cam;
     public static Camera cam{get
     {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using elZach.Common;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(LineRenderer))]
 public class Path : MonoBehaviour
@@ -52,7 +53,7 @@ public class Path : MonoBehaviour
     public void SelfDestruct()
     {
         if (assigned) assigned.onDestroy -= SelfDestruct;
-        Destroy(gameObject);
+        if (gameObject) Destroy(gameObject);
     }
 
     public event Action onCreateNewPath;
