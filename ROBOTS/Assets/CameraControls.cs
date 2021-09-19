@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using elZach.Common;
@@ -5,6 +6,8 @@ using UnityEngine;
 
 public class CameraControls : MonoBehaviour
 {
+    static Lazy<CameraControls> _instance = new Lazy<CameraControls>(FindObjectOfType<CameraControls>); 
+    public static CameraControls Instance => _instance.Value;
     private static Camera _cam;
     public static Camera cam{get
     {
@@ -34,6 +37,11 @@ public class CameraControls : MonoBehaviour
 
     public static bool active = true;
     public static void SetCameraControls(bool value) => active = value;
+
+    public void SetCameraTo(Vector3 pos)
+    {
+        pivotTargetPosition = pos;
+    }
 
     void Start()
     {

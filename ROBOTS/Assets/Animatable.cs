@@ -32,6 +32,9 @@ public class Animatable : MonoBehaviour
 
     }
 
+    public bool animateAtOnEnable = false;
+    public int animateAtOnEnableTo;
+
     public List<Clip> clips;
     [NonSerialized] public int currentIndex = 0;
 
@@ -40,6 +43,11 @@ public class Animatable : MonoBehaviour
     void Awake()
     {
         SetTo(0);
+    }
+
+    void OnEnable()
+    {
+        if(animateAtOnEnable) Play(animateAtOnEnableTo);
     }
 
     public void SetTo(int index) => SetTo(clips[index]);

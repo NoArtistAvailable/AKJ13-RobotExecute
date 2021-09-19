@@ -25,12 +25,15 @@ public class PathPlaner : MonoBehaviour
 
     private Path currentPath;
     public Robot.Faction currentFaction;
+
+    public Material teamPathMat, enemyPathMat;
     
     public void StartPath(Robot target)
     {
         isPlanning = true;
         line.positionCount = 3;
         currentPath = pathPrefab.gameObject.Spawn().GetComponent<Path>();
+        currentPath.line.sharedMaterial = target.faction == currentFaction ? teamPathMat : enemyPathMat;
         currentPath.pathPoints.Clear();
         currentPath.AssignToRobot(target);
         AddPointToPath(currentPath, target.transform.position);
@@ -39,6 +42,7 @@ public class PathPlaner : MonoBehaviour
     public void LoadPath(Robot target, List<Vector3> positions)
     {
         var newPath = pathPrefab.gameObject.Spawn().GetComponent<Path>();
+        newPath.line.sharedMaterial = target.faction == currentFaction ? teamPathMat : enemyPathMat;
         newPath.AssignToRobot(target);
         newPath.AddPoints(positions);
     }
@@ -121,4 +125,8 @@ public class PathPlaner : MonoBehaviour
     //         seriBot.Spawn(GameManager.Instance.robotPrefab);
     //     }
     // }
+    public static void SelectFaction(int memIndex)
+    {
+        Instance.currentFaction = (Robot.Faction) memIndex;
+    }
 }

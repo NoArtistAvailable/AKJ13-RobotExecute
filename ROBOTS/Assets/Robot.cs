@@ -57,6 +57,9 @@ public class Robot : MonoBehaviour
                 Vector3 direction = otherPos - myPos;
                 float distance = direction.magnitude;
                 if (distance > Vision.range) continue;
+
+                float angle = Vector3.Angle(transform.forward, direction.normalized);
+                if (angle > Vision.angle) continue;
                 if (Physics.Raycast(myPos, direction, out var hit, distance, PathPlaner.ColliderMask))
                 {
                     if (hit.collider.GetComponentInParent<Robot>() != otherBot) continue;
@@ -113,7 +116,8 @@ public class Robot : MonoBehaviour
             pathPoints = new List<Vector3>();
             foreach (var point in robot.path.pathPoints)
             {
-                pathPoints.Add(point.position);
+                Vector3 serializedPosition = new Vector3(point.position.x, (int) point.action, point.position.z);
+                pathPoints.Add(serializedPosition);
             }
         }
 
@@ -129,12 +133,13 @@ public class Robot : MonoBehaviour
             return JsonUtility.ToJson(this);
         }
 
-        public Robot Spawn(Robot prefab)
+        public Robot Spawn(Robot prefab, Faction faction)
         {
             var bot = Instantiate(prefab);
             bot.transform.position = pathPoints[0];
             bot.robotName = name;
             bot.name = name;
+            bot.faction = faction;
 
             PathPlaner.Instance.LoadPath(bot, pathPoints);
             

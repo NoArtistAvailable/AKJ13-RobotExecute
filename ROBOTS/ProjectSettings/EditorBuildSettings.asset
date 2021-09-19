@@ -4,5 +4,17 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 57bc424e81716994eae7a0e41fe20818
+  - enabled: 1
+    path: Assets/Scenes/GetToTheCenter.unity
+    guid: 987fea887276f5347bb096e88b3880bd
+  - enabled: 1
+    path: Assets/Scenes/Deathmatch.unity
+    guid: bab227d64b3cd2c4d977b9f5952dc777
+  - enabled: 1
+    path: Assets/Scenes/TheHeist.unity
+    guid: 7bd6647b91c30914ca82267358ba72d5
   m_configObjects: {}

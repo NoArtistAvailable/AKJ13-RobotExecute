@@ -6,14 +6,17 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 using Newtonsoft.Json;
+using UnityEngine.Events;
 
 public class NetSynch : MonoBehaviour
 {
     public string serverURL = "https://akj13-robot-execute.glitch.me";
-    public GameManager.SerializablePlan[] onlinePlans;
+    public static GameManager.SerializablePlan[] onlinePlans;
+
+    public UnityEvent<string> OnPingingSuccess, OnDownloadSuccess, OnUploadSuccess, OnConnectionError;
     
     public Button<NetSynch> pingButton = new Button<NetSynch>((x) => x.PingServer());
-    void PingServer() => StartCoroutine(PingServerRoutine());
+    public void PingServer() => StartCoroutine(PingServerRoutine());
 
     public Button<NetSynch> uploadButton = new Button<NetSynch>((x) => x.UploadCurrentPlan());
     public void UploadCurrentPlan()
@@ -43,7 +46,9 @@ public class NetSynch : MonoBehaviour
                 Debug.Log("[NetSynch] Waiting for Server response.");
             }
             Debug.Log(req.downloadHandler.text);
-            //OnPingingFinished.Invoke(req.downloadHandler.text);
+            if(req.result == UnityWebRequest.Result.Success)
+                OnPingingSuccess.Invoke(req.downloadHandler.text);
+            else OnConnectionError.Invoke(req.downloadHandler.text);
         }
     }
     
@@ -69,6 +74,9 @@ public class NetSynch : MonoBehaviour
             Debug.Log("sending");
         }
         Debug.Log(req.result);
+        if(req.result == UnityWebRequest.Result.Success)
+            OnUploadSuccess.Invoke(req.downloadHandler.text);
+        else OnConnectionError.Invoke(req.downloadHandler.text);
         //OnUploadFinished.Invoke();
     }
     
@@ -88,9 +96,17 @@ public class NetSynch : MonoBehaviour
             }
             
             Debug.Log(req.downloadHandler.text);
-            onlinePlans = JsonConvert.DeserializeObject<GameManager.SerializablePlan[]>(req.downloadHandler.text);
-            Debug.Log($"Downloaded {onlinePlans.Length} plans.");
-            //NetSynch.Instance.OnDownloadFinished.Invoke(d.monList.Length.ToString("0000"));
+            if (req.result != UnityWebRequest.Result.Success)
+            {
+                OnConnectionError.Invoke(req.downloadHandler.text);
+            }
+            else
+            {
+                onlinePlans = JsonConvert.DeserializeObject<GameManager.SerializablePlan[]>(req.downloadHandler.text);
+                Debug.Log($"Downloaded {onlinePlans.Length} plans.");
+                //NetSynch.Instance.OnDownloadFinished.Invoke(d.monList.Length.ToString("0000"));
+                if (req.result == UnityWebRequest.Result.Success) OnDownloadSuccess.Invoke(req.downloadHandler.text);
+            }
         }
             
     }

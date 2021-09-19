@@ -137,15 +137,29 @@ public class Path : MonoBehaviour
 
     public void AddPoint(Vector3 pos)
     {
-        pathPoints.Add(new Point(pos));
+        var p = new Point(pos);
+        p.action = (PathPoint.PathAction) Mathf.RoundToInt(pos.y);
+        p.position.y = 0f;
+        pathPoints.Add(p);
         CreatePath();
         Calculate(assigned);
     }
 
     public void AddPoints(List<Vector3> positions)
     {
-        foreach(var pos in positions)
-            pathPoints.Add(new Point(pos));
+        foreach (var pos in positions)
+        {
+            var p = new Point(pos);
+            if(pos.y > 0)
+            {
+                p.action = (PathPoint.PathAction) Mathf.RoundToInt(pos.y);
+                p.position.y = 0f;
+                Debug.Log($"{pos.y} -> {p.action}");
+            }
+            
+            pathPoints.Add(p);
+        }
+
         CreatePath();
         Calculate(assigned);
     }
