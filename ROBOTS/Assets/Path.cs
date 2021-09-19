@@ -65,6 +65,7 @@ public class Path : MonoBehaviour
         line.positionCount = pathPoints.Count;
         for (var index = 0; index < pathPoints.Count; index++)
         {
+            int memIndex = index;
             var point = pathPoints[index];
             var pos = point.position + Vector3.up * up;
             line.SetPosition(index, pos);
@@ -84,6 +85,15 @@ public class Path : MonoBehaviour
             };
             pointScript.onRemove += () =>
             {
+                Debug.Log(memIndex);
+                if (memIndex == 0) return;
+                if (memIndex < pathPoints.Count - 1)
+                {
+                    Debug.Log($"{(pathPoints[memIndex - 1].position+ Vector3.up * up)} -> {(pathPoints[memIndex + 1].position+ Vector3.up * up)}");
+                    if(!PathPlaner.CheckValidity(
+                        pathPoints[memIndex - 1].position+ Vector3.up * up, 
+                        pathPoints[memIndex + 1].position+ Vector3.up * up)) return;
+                }
                 pathPoints.Remove(point);
                 pointVisual.Despawn();
                 CreatePath();

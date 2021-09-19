@@ -9,6 +9,7 @@ public class PathPlaner : MonoBehaviour
     static Lazy<PathPlaner> _instance = new Lazy<PathPlaner>(FindObjectOfType<PathPlaner>);
     public static PathPlaner Instance => _instance.Value;
     public Path pathPrefab;
+    public LayerMask colliderMask = -1;
 
     LineRenderer _line;
     public LineRenderer line{get
@@ -56,7 +57,18 @@ public class PathPlaner : MonoBehaviour
             line.SetPosition(2, pos);
             if (Input.GetMouseButtonDown(0))
             {
-                AddPointToPath(currentPath, pos);
+                Vector3 from = lastPlacedPoint + Vector3.up * pathPrefab.up;
+                Vector3 to = (pos + Vector3.up * pathPrefab.up);
+                //Debug.DrawRay(from,direction,Color.red,3f);
+                // if (Physics.Raycast(from, direction, out var hit, direction.magnitude))
+                // {
+                //     Debug.Log($"Hit sth {hit.collider.name}!", hit.collider);
+                // }
+                // else
+                // {
+                //     AddPointToPath(currentPath, pos);
+                // }
+                if (CheckValidity(from, to)) AddPointToPath(currentPath, pos);
             }
 
             if (Input.GetMouseButtonDown(1))
@@ -64,6 +76,21 @@ public class PathPlaner : MonoBehaviour
                 isPlanning = false;
                 line.positionCount = 0;
             }
+        }
+    }
+
+    public static bool CheckValidity(Vector3 posA, Vector3 posB)
+    {
+        Vector3 direction = posB - posA;
+        Debug.DrawRay(posA,direction,Color.red,3f);
+        if (Physics.Raycast(posA, direction, out var hit ,direction.magnitude, Instance.colliderMask))
+        {
+            Debug.Log($"Hit sth {hit.collider.name}!", hit.collider);
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 
@@ -80,7 +107,7 @@ public class PathPlaner : MonoBehaviour
         currentPath = path;
         isPlanning = true;
         line.positionCount = 3;
-        lastPlacedPoint = pointScript.transform.position;
+        lastPlacedPoint = pointScript.transform.position - Vector3.up * path.up;
         line.SetPosition(0, lastPlacedPoint);
     }
 

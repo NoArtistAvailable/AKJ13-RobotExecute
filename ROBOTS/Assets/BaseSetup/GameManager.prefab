@@ -332,7 +332,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 7fe44384edb35124daa24b6416fadc6e, type: 3}
     m_FontSize: 18
     m_FontStyle: 0
     m_BestFit: 0
@@ -664,6 +664,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathPrefab: {fileID: 7785718375436690228, guid: fead28f160ccc5b4d9ee9c36716a986b, type: 3}
+  colliderMask:
+    serializedVersion: 2
+    m_Bits: 1
   currentFaction: 0
 --- !u!120 &1158270848486052347
 LineRenderer:
@@ -1417,7 +1420,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 7fe44384edb35124daa24b6416fadc6e, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -1653,7 +1656,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 7fe44384edb35124daa24b6416fadc6e, type: 3}
     m_FontSize: 18
     m_FontStyle: 0
     m_BestFit: 0

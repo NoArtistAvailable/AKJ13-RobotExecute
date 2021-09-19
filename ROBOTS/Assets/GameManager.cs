@@ -67,15 +67,15 @@ namespace elZach.Robots
             robot.onDestroy += () => Instance.currentRobots.Remove(robot);
         }
 
-        private void PlaySliderChanged(float arg0)
+        public void PlaySliderChanged(float arg0)
         {
             float currentTime = arg0 * gameTime;
             foreach (var robot in currentRobots)
             {
                 if (robot.path != null && robot.path.pathPoints.Count > 0)
                 {
-                    robot.rb.MovePosition(robot.path.Evaluate(currentTime, out var dir, out var state));
-                    robot.rb.MoveRotation(Quaternion.LookRotation(dir, Vector3.up));
+                    robot.transform.position = robot.path.Evaluate(currentTime, out var dir, out var state);
+                    robot.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
                     bool stateChange = robot.state != state;
                     robot.state = state;
                     if(stateChange) robot.GetComponentInChildren<VisionCone>().GetComponent<Animatable>().Play(state == PathPoint.PathAction.TakeAim ? 1 : 0);
