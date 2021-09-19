@@ -29,7 +29,12 @@ public class BillBoard : MonoBehaviour
         }}
 
         private List<BillBoard> billBoards = new List<BillBoard>();
-
+        static bool quitting;
+        void OnEnable()
+        {
+            Application.quitting += () => quitting = true;
+        }
+        
         void Update()
         {
             // var camDirection = camera.forward;
@@ -39,19 +44,20 @@ public class BillBoard : MonoBehaviour
             foreach (var billBoard in billBoards)
             {
                 var dir = (billBoard.transform.position - camPosition).normalized;
-                dir.ZeroY();
-                dir = dir.normalized;
+                //dir = dir.XZDirection();
                 billBoard.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
             }
         }
 
         public static void Register(BillBoard billBoard)
         {
+            if (quitting) return;
             Instance.billBoards.Add(billBoard);
         }
 
         public static void Deregister(BillBoard billBoard)
         {
+            if (quitting) return;
             Instance.billBoards.Remove(billBoard);
         }
 

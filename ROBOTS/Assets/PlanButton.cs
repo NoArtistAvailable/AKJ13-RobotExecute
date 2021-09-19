@@ -12,6 +12,6 @@ public class PlanButton : MonoBehaviour
 
     private void Clicked()
     {
-        PathPlaner.Instance.Value.StartPath(transform.root.gameObject);
+        PathPlaner.Instance.StartPath(GetComponentInParent<Robot>());
     }
 }
