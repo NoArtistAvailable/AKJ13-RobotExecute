@@ -64,7 +64,7 @@ public class Robot : MonoBehaviour
                 {
                     if (hit.collider.GetComponentInParent<Robot>() != otherBot) continue;
                 }
-                Debug.Log("PEWPEW", this);
+                //Debug.Log("PEWPEW", this);
                 otherBot.GameDeath();
             }
         }
@@ -136,6 +136,10 @@ public class Robot : MonoBehaviour
         public Robot Spawn(Robot prefab, Faction faction)
         {
             var bot = Instantiate(prefab);
+            if (pathPoints.Count < 1)
+            {
+                pathPoints = new List<Vector3>() {Vector3.zero};
+            }
             bot.transform.position = pathPoints[0];
             bot.robotName = name;
             bot.name = name;

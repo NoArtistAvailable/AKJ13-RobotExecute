@@ -155,7 +155,7 @@ public class Path : MonoBehaviour
             {
                 p.action = (PathPoint.PathAction) Mathf.RoundToInt(pos.y);
                 p.position.y = 0f;
-                Debug.Log($"{pos.y} -> {p.action}");
+                //Debug.Log($"{pos.y} -> {p.action}");
             }
             
             pathPoints.Add(p);

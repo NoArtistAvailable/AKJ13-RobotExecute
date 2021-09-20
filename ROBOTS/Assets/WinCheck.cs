@@ -4,8 +4,16 @@ using UnityEngine.Events;
 
 public class WinCheck : MonoBehaviour
 {
-    private static Lazy<WinCheck> _instance = new Lazy<WinCheck>(FindObjectOfType<WinCheck>);
-    public static WinCheck Instance => _instance.Value;
+    static WinCheck _instance;// = new Lazy<PathPlaner>(FindObjectOfType<PathPlaner>);
+
+    public static WinCheck Instance
+    {
+        get
+        {
+            if (!_instance) _instance = FindObjectOfType<WinCheck>();
+            return _instance;
+        }
+    }
     
     public float radius = 5f;
 

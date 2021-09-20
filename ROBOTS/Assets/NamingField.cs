@@ -10,4 +10,10 @@ public class NamingField : MonoBehaviour
     {
         GetComponent<InputField>().onValueChanged.AddListener((val) => GameManager.ManufacturerName = val);
     }
+
+    void OnEnable()
+    {
+        var placeHolderText = GetComponent<InputField>().placeholder as Text;
+        placeHolderText.text = GameManager.ManufacturerName;
+    }
 }

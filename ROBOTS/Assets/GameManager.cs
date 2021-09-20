@@ -152,7 +152,7 @@ namespace elZach.Robots
             var textAnim = playAgainstText.GetComponent<Animatable>();
             playAgainstText.text = $"Playing {enemyPlan.manufacturer}";
             textAnim.Play(1);
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(2.5f);
             textAnim.Play(0);
             // playSlider.interactable = false;
             PlayerCanInteract = false;
@@ -164,20 +164,28 @@ namespace elZach.Robots
             }
             
             var winnerFaction = WinCheck.Instance.Check();
-            string winnerText;
-            if (winnerFaction == PathPlaner.Instance.currentFaction)
+            string winnerText = "";
+            if (winnerFaction == PathPlaner.Instance.currentFaction || factionPlayers.ContainsKey(winnerFaction))
             {
-                winnerText = $"{manufacturerName} won the round!";
-                wins++;
+                if (winnerFaction == PathPlaner.Instance.currentFaction)
+                {
+                    winnerText = $"{manufacturerName} won the round!";
+                    wins++;
+                }
+                else
+                {
+                    winnerText = $"{factionPlayers[winnerFaction].manufacturer} won the round!";
+                }
             }
             else
             {
-                winnerText = $"{factionPlayers[winnerFaction].manufacturer} won the round!";
+                winnerText = "DRAW!";
             }
+
             OnWinMessage.Invoke(winnerText);
             playAgainstText.text = winnerText;
             textAnim.Play(1);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(3f);
             textAnim.Play(0);
         }
 
@@ -208,7 +216,7 @@ namespace elZach.Robots
             List<string> robots = new List<string>();
             foreach (var robot in currentRobots)
             {
-                if(robot.faction == PathPlaner.Instance.currentFaction)
+                if(robot.faction == PathPlaner.Instance.currentFaction && robot.path?.pathPoints.Count>1)
                     robots.Add(new Robot.SerializableRobot(robot).ToJSON());
             }
 
@@ -222,6 +230,8 @@ namespace elZach.Robots
         {
             var downloadPlan = plan;
             Robot.Faction faction = (Robot.Faction) downloadPlan.faction;
+            foreach(var oldBot in currentRobots.FindAll(x=>x.faction==faction)) if(oldBot.path) oldBot.path.SelfDestruct();
+            
             foreach (var robotString in downloadPlan.robots)
             {
                 var serializedRobot = new Robot.SerializableRobot(robotString);

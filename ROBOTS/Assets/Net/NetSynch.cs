@@ -43,7 +43,7 @@ public class NetSynch : MonoBehaviour
             {
                 //await UniTask.Delay(250);
                 yield return null;
-                Debug.Log("[NetSynch] Waiting for Server response.");
+                //Debug.Log("[NetSynch] Waiting for Server response.");
             }
             Debug.Log(req.downloadHandler.text);
             if(req.result == UnityWebRequest.Result.Success)
@@ -90,7 +90,7 @@ public class NetSynch : MonoBehaviour
 
             while (!req.isDone)
             {
-                Debug.Log("getting");
+                //Debug.Log("getting");
                 yield return null;
                 //Instance.OnDownloadProgress.Invoke(req.downloadProgress);
             }

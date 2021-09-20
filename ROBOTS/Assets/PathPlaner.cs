@@ -41,7 +41,7 @@ public class PathPlaner : MonoBehaviour
     {
         isPlanning = true;
         line.positionCount = 3;
-        currentPath = pathPrefab.gameObject.Spawn().GetComponent<Path>();
+        currentPath = Instantiate(pathPrefab); //pathPrefab.gameObject.Spawn().GetComponent<Path>();
         currentPath.line.sharedMaterial = target.faction == currentFaction ? teamPathMat : enemyPathMat;
         currentPath.pathPoints.Clear();
         currentPath.AssignToRobot(target);
@@ -50,7 +50,7 @@ public class PathPlaner : MonoBehaviour
 
     public void LoadPath(Robot target, List<Vector3> positions)
     {
-        var newPath = pathPrefab.gameObject.Spawn().GetComponent<Path>();
+        var newPath = Instantiate(pathPrefab);//pathPrefab.gameObject.Spawn().GetComponent<Path>();
         newPath.line.sharedMaterial = target.faction == currentFaction ? teamPathMat : enemyPathMat;
         newPath.AssignToRobot(target);
         newPath.AddPoints(positions);
